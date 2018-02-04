@@ -44,4 +44,67 @@ defmodule MyList do
   def span(from, to) when from > to, do: raise "'from' must be less than 'to'"
   def span(from, to) when from == to, do: [from]
   def span(from, to), do: [from | span(from + 1, to)]
+
+  # Manual Enum.all? implementation
+  def all?([], _func), do: true
+  def all?([ head | tail ], func) do
+    if func.(head) do
+      all?(tail, func)
+    else
+      false
+    end
+  end
+
+  # Manual Enum.each implementation
+  def each([], _func), do: :ok
+  def each([ head | tail ], func) do
+    func.(head)
+    each(tail, func)
+  end
+
+  # Manual Enum.filter implementation
+  def filter([], _func), do: []
+  def filter([ head | tail ], func) do
+    if func.(head) do
+      [ head | filter(tail, func) ]
+    else
+      filter(tail, func)
+    end
+  end
+
+  # Manual Enum.split implementation
+  def split(enum, count) when count >= 0, do: _split([], enum, count)
+  def split(enum, count) when count < 0, do: _split([], enum, _reverse_list_position(enum, 0, count))
+  defp _split(first, second, count) when count <= 0 or second == [], do: {Enum.reverse(first), second}
+  defp _split(first, [ head | tail ], count) when count > 0, do: _split([ head | first ], tail, count - 1)
+
+  # Negative index position helper function
+  defp _reverse_list_position([], positive, negative) do
+    position = positive + negative
+    if position >= 0 do
+      position
+    else
+      0
+    end
+  end
+  defp _reverse_list_position([ _head | tail ], positive, negative), do: _reverse_list_position(tail, positive + 1, negative)
+
+  # Manual Enum.take implementation
+  def take(list, amount) when amount == 0 or list == [], do: []
+  def take([ head | tail ], amount) when amount > 0, do: [ head | take(tail, amount - 1) ]
+  def take(list, amount) when amount < 0, do: _ignore_until(list, _reverse_list_position(list, 0, amount))
+
+  # Return remaining list after index (opposite of Enum.take)
+  defp _ignore_until(list, index) when list == [] or index <= 0, do: list
+  defp _ignore_until([ _head | tail ], index), do: _ignore_until(tail, index - 1)
+
+  # Flatten
+  def flatten([]), do: []
+  def flatten([ head | tail ]) do
+    if is_list(head) do
+      flatten(head) ++ flatten(tail)
+    else
+      [ head | flatten(tail) ]
+    end
+  end
 end
