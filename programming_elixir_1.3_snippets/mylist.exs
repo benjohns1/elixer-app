@@ -107,4 +107,21 @@ defmodule MyList do
       [ head | flatten(tail) ]
     end
   end
+
+  # List primes from 2 to n, using list comprehension
+  def list_primes(n) do
+    for x <- span(2, n), prime?(x), do: x
+  end
+  def prime?(2), do: true
+  def prime?(3), do: true
+  def prime?(n) do
+    max = n
+    |> :math.sqrt
+    |> :math.ceil
+    |> :erlang.trunc
+
+    not (span(2,max)
+    |> Enum.filter(&(rem(&1,2) != 0 or &1 == 2)) 
+    |> Enum.any?(&(rem(n,&1) == 0)))
+  end
 end
