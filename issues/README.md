@@ -1,21 +1,4 @@
 # Issues
-
-**TODO: Add description**
-
-## Installation
-
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `issues` to your list of dependencies in `mix.exs`:
-
-```elixir
-def deps do
-  [
-    {:issues, "~> 0.1.0"}
-  ]
-end
-```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/issues](https://hexdocs.pm/issues).
+[Project ExDocs] (https://benjohns1.github.io/elixir-app/issues/doc/index.html)
+Based on sample project from Dave Thomas' [Programming Elixir 1.3] (https://www.amazon.com/Programming-Elixir-1-3-Functional-Concurrent/dp/168050200X) book
 
