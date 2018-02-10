@@ -5,7 +5,9 @@ defmodule Issues.CLI do
   _n_ issues in a github project
   """
 
-  def run(argv) do
+  import Issues.TableFormatter, only: [ print_table_for_columns: 2 ]
+
+  def main(argv) do
     argv
     |> parse_args
     |> process
@@ -40,6 +42,7 @@ defmodule Issues.CLI do
     |> decode_response
     |> sort_ascending
     |> Enum.take(count)
+    |> print_table_for_columns(["number", "created_at", "title"])
   end
 
   def sort_ascending(issue_list) do
