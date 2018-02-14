@@ -10,12 +10,12 @@ defmodule Stack2.Application do
     children = [
       # Starts a worker by calling: Stack2.Worker.start_link(arg)
       # {Stack2.Worker, arg},
-      {Stack2.Server, []}
+      {Stack2.Supervisor, []}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
-    opts = [strategy: :one_for_one, name: Stack2.Supervisor]
+    opts = [strategy: :one_for_one, name: Stack2.Application]
     Supervisor.start_link(children, opts)
   end
 end

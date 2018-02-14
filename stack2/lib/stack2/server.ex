@@ -4,8 +4,8 @@ defmodule Stack2.Server do
   #####
   # External API
 
-  def start_link(initial_stack \\ []) do
-    GenServer.start_link(__MODULE__, initial_stack, name: __MODULE__)
+  def start_link(stash_pid) do
+    {:ok, _pid} = GenServer.start_link(__MODULE__, stash_pid, name: __MODULE__)
   end
 
   def pop do
@@ -22,21 +22,26 @@ defmodule Stack2.Server do
   #####
   # GenServer implementation
 
+  def init(stash_pid) do
+    current_stack = Stack2.Stash.get_value(stash_pid)
+    { :ok, {current_stack, stash_pid} }
+  end
+
   def handle_call(:pop, _from, []) do
     raise "Empty stack, cannot pop any more values"
     { :reply, nil, [] }
   end
 
-  def handle_call(:pop, _from, [stack_head | stack_tail]) do
-    { :reply, stack_head, stack_tail}
+  def handle_call(:pop, _from, {[stack_head | stack_tail], stash_pid}) do
+    { :reply, stack_head, {stack_tail, stash_pid}}
   end
 
-  def handle_cast({:push, value}, stack) do
-    { :noreply, [ value | stack ]}
+  def handle_cast({:push, value}, {stack, stash_pid}) do
+    { :noreply, {[ value | stack ], stash_pid}}
   end
 
-  def terminate(reason, state) do
-    IO.puts "#{__MODULE__} terminating: #{inspect reason}\nwith state: #{inspect state}"
+  def terminate(reason, {stack, stash_pid}) do
+    Stack2.Stash.save_value(stash_pid, stack)
   end
 
   # End GenServer implementation

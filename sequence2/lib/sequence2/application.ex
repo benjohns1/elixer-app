@@ -10,12 +10,12 @@ defmodule Sequence2.Application do
     children = [
       # Supervisor.Spec.worker(Sequence2.Server, [123])
       # Starts a worker by calling: Sequence2.Worker.start_link(arg)
-      {Sequence2.Server, 123},
+      {Sequence2.Supervisor, 123},
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
-    opts = [strategy: :one_for_one, name: Sequence2.Supervisor]
+    opts = [strategy: :one_for_one, name: Sequence2.Application]
     Supervisor.start_link(children, opts)
   end
 end
