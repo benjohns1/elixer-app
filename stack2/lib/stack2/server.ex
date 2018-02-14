@@ -40,7 +40,7 @@ defmodule Stack2.Server do
     { :noreply, {[ value | stack ], stash_pid}}
   end
 
-  def terminate(reason, {stack, stash_pid}) do
+  def terminate(_reason, {stack, stash_pid}) do
     Stack2.Stash.save_value(stash_pid, stack)
   end
 

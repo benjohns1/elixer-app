@@ -1,5 +1,6 @@
-defmodule Sequence2.Server do
+defmodule Sequence.Server do
   use GenServer
+  @vsn "0"
 
   #####
   # External API
@@ -9,7 +10,7 @@ defmodule Sequence2.Server do
   end
 
   def next_number do
-    GenServer.call __MODULE__, :next_number
+    with number = GenServer.call(__MODULE__, :next_number), do: "The next number is #{number}"
   end
 
   def increment_number(delta \\ 1) do
@@ -23,7 +24,7 @@ defmodule Sequence2.Server do
   # GenServer implementation
 
   def init(stash_pid) do
-    current_number = Sequence2.Stash.get_value(stash_pid)
+    current_number = Sequence.Stash.get_value(stash_pid)
     { :ok, {current_number, stash_pid} }
   end
 
@@ -36,7 +37,7 @@ defmodule Sequence2.Server do
   end
 
   def terminate(_reason, {current_number, stash_pid}) do
-    Sequence2.Stash.save_value(stash_pid, current_number)
+    Sequence.Stash.save_value(stash_pid, current_number)
   end
 
   # End GenServer implementation

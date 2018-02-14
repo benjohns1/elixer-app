@@ -15,7 +15,8 @@ defmodule Stack2.Mixfile do
   def application do
     [
       extra_applications: [:logger],
-      mod: {Stack2.Application, []}
+      mod: {Stack2.Application, []},
+      registered: [Stack2.Server]
     ]
   end
 

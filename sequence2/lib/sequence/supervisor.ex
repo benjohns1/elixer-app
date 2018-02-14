@@ -1,4 +1,4 @@
-defmodule Sequence2.Supervisor do
+defmodule Sequence.Supervisor do
   use Supervisor
 
   def start_link(initial_number) do
@@ -9,9 +9,9 @@ defmodule Sequence2.Supervisor do
 
   def start_workers(sup, initial_number) do
     # Start the stas worker
-    {:ok, stash} = Supervisor.start_child(sup, worker(Sequence2.Stash, [initial_number]))
+    {:ok, stash} = Supervisor.start_child(sup, worker(Sequence.Stash, [initial_number]))
     # and then the supervisor for the actual sequence server
-    Supervisor.start_child(sup, supervisor(Sequence2.SubSupervisor, [stash]))
+    Supervisor.start_child(sup, supervisor(Sequence.SubSupervisor, [stash]))
   end
 
   def init(_) do

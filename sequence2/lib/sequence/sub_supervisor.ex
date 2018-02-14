@@ -1,4 +1,4 @@
-defmodule Sequence2.SubSupervisor do
+defmodule Sequence.SubSupervisor do
   use Supervisor
 
   def start_link(stash_pid) do
@@ -7,7 +7,7 @@ defmodule Sequence2.SubSupervisor do
 
   def init(stash_pid) do
     child_processes = [
-      worker(Sequence2.Server, [stash_pid])
+      worker(Sequence.Server, [stash_pid])
     ]
     supervise child_processes, strategy: :one_for_one
   end

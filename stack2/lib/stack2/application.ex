@@ -5,12 +5,12 @@ defmodule Stack2.Application do
 
   use Application
 
-  def start(_type, _args) do
+  def start(_type, initial_stack) do
     # List all child processes to be supervised
     children = [
       # Starts a worker by calling: Stack2.Worker.start_link(arg)
       # {Stack2.Worker, arg},
-      {Stack2.Supervisor, []}
+      {Stack2.Supervisor, initial_stack}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
